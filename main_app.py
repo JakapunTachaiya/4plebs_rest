@@ -4,6 +4,7 @@ import os
 import re
 from datetime import datetime
 import pandas as pd
+import sys, getopt
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
@@ -163,18 +164,22 @@ def createFolder(subboard,year,month):
 
     return os.path.join(basePath,subboard,year,month)
 
-
-
-if __name__ == '__main__':
-    # createFolder(2018,11)
-
+def main(argv):
 
     # searchByStartdate('pol','2018-11-01')
     # getIndexByPageNo('pol',1)
 
     #105302896 date start 2017-01-01
 
-    startId = 105302896
-    startId = 105300000
+    startId = 105502207
     endId   = 105600000
+
+    startId = int(sys.argv[1])
+    endId = int(sys.argv[2])
+    print startId,endId
     crawl4plebs('pol',startId,endId)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+
