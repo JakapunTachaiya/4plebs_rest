@@ -112,8 +112,16 @@ def crawl4plebs(subboard,startId,endID):
     #     log_df = pd.DataFrame()
 
     basePath = str(startId)+"_"+str(endID)
+    basePathLog = basePath+'_log'
 
     while(currentTid<=endID):
+
+        if os.path.exists(basePathLog):
+            with open(basePathLog, 'r') as f:
+                logid = int(f.readline().strip())
+            currentTid = logid
+
+
         json_result = getThreadById(subboard,currentTid)
 
         if 'error' in json_result:
@@ -128,26 +136,18 @@ def crawl4plebs(subboard,startId,endID):
             dateTxt = json_result[keys]["op"]['fourchan_date']
             dt = stringToDateTime(dateTxt)
 
-            folPath =  createFolder(basePath,subboard,dt.year,dt.month)
+            folPath  =  createFolder(basePath,subboard,dt.year,dt.month)
 
             outPath = os.path.join(folPath,str(threadId))
             with open(outPath, 'w') as f:
                 f.write(dumptext)
 
-            # log_dict ={}
-            # log_dict['tid'] = str(threadId)
-            # log_dict['board'] = subboard
-            # log_dict['thread_date'] = dt.date()
-            # log_dict['crawl_date'] = datetime.now().date()
-            # log_df = log_df.append(log_dict, ignore_index=True)
-
             print 'tid:{} -{}'.format(currentTid,dt.date())
-
-            # print folPath
-
 
 
         currentTid= currentTid+1
+        with open(basePathLog, 'w') as f:
+            f.write(str(currentTid))
 
     # log_df = log_df[['tid','thread_date','board','crawl_date']]
 
