@@ -7,7 +7,7 @@ import pandas as pd
 import sys, getopt
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'}
 
 
 def jprint(obj):
@@ -80,6 +80,7 @@ def getIndexByPageNo(subboard,pageNo):
 
 def getThreadById(subboard,id):
     api_url_base = "http://archive.4plebs.org/_/api/chan/thread/"
+
     parameters = {
         "board": subboard,
         "num": id
@@ -88,6 +89,8 @@ def getThreadById(subboard,id):
     response = requests.get(api_url_base, params=parameters, headers=headers)
 
     if response.status_code == 200:
+        # print response
+        # return  json.loads(response.text)
         return response.json()
     else:
         return {u'error': u'Thread not found.'}
